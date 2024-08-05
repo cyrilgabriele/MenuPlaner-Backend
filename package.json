@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Project to generate a Menuplan (and in the futer as well keep track of the availability fo the ingredients at home)",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon ./src/menuPlaner-backend.js"
@@ -16,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
+    "esm": "^3.2.25",
     "express": "^4.19.2"
   },
   "devDependencies": {
