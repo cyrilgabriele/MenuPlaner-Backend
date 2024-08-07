@@ -47,7 +47,7 @@ async function get_llm_response(data) {
     const HF_TOKEN = process.env.HUGGINGFACE_TOKEN
     const inference = new HfInference(HF_TOKEN);
     const out = await inference.chatCompletion({
-        model: 'mistralai/Mistral-7B-Instruct-v0.2',
+        model: MODEL,
         messages: [{ role: "user", content: PROMPT+data}],
         max_tokens: 1000
       });
