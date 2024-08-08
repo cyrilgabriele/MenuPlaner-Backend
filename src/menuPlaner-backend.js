@@ -23,13 +23,16 @@ app.listen(port, () => {
 })
 
 app.post('/menu', async (req, res) => {
+  console.log("Hello there")
   //console.log('This is in the POST: ', req)
   const { title, body, userId } = req.body
   console.log(`Title: ${title}, Body: ${body}, UserId: ${userId}`);
   try {
       const llm_response = await get_llm_response(body)
-      console.log('LLM: \n', llm_response.content)
-      res.send(llm_response)
+      //console.log('LLM: \n', llm_response.content)
+      const parsedLLMResponse = parseLLMResponse(llm_response)
+      //console.log("parsedLLMResponse: ", parsedLLMResponse)
+      res.send(parsedLLMResponse)
       //res.send('Hello from Backend :)')
   } catch (error) {
       console.log(error)
@@ -38,14 +41,13 @@ app.post('/menu', async (req, res) => {
 })
 
 app.post('/saveMenu', (req, res) => {
-  console.log(req)
+  //console.log(req)
   res.send('done')
 })
 
-
 async function get_llm_response(data) {
-    console.log("data:\n", data)
-    console.log("PROMPT+data: \n", PROMPT+data)
+    //console.log("data:\n", data)
+    //console.log("PROMPT+data: \n", PROMPT+data)
     const HF_TOKEN = process.env.HUGGINGFACE_TOKEN
     const inference = new HfInference(HF_TOKEN);
     const out = await inference.chatCompletion({
@@ -55,4 +57,28 @@ async function get_llm_response(data) {
       });
     console.log("Out:\n", out.choices[0].message)
     return out.choices[0].message
+}
+
+function parseLLMResponse(LLMResponse) {
+  //console.log('LLMResponse in parseLLMResponse: ', LLMResponse)
+  const parsedContent = JSON.parse(LLMResponse.content);
+
+  var menu = {
+    Monday: { Breakfast: '', Lunch: '', Dinner: '' },
+    Tuesday: { Breakfast: '', Lunch: '', Dinner: '' },
+    Wednesday: { Breakfast: '', Lunch: '', Dinner: '' },
+    Thursday: { Breakfast: '', Lunch: '', Dinner: '' },
+    Friday: { Breakfast: '', Lunch: '', Dinner: '' },
+    Saturday: { Breakfast: '', Lunch: '', Dinner: '' },
+    Sunday: { Breakfast: '', Lunch: '', Dinner: '' },
+  };
+
+  for (const key in parsedContent) {
+    if (key.includes('Ingredients')) continue; // Skip the Ingredients key
+    const [day, meal] = key.split('_');
+    menu[day][meal] = parsedContent[key];
+  }
+
+  console.log(menu)
+  return menu
 }
