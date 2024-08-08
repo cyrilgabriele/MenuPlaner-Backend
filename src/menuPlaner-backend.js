@@ -14,9 +14,6 @@ app.set('view engine', 'ejs')
 app.use(cors()); // Cross Origin Resource Sharing => needed bc two different portsw
 app.use(express.json())
 
-
-
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
