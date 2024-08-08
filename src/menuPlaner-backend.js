@@ -23,7 +23,6 @@ app.listen(port, () => {
 })
 
 app.post('/menu', async (req, res) => {
-  console.log("Hello there")
   //console.log('This is in the POST: ', req)
   const { title, body, userId } = req.body
   console.log(`Title: ${title}, Body: ${body}, UserId: ${userId}`);
@@ -60,8 +59,48 @@ async function get_llm_response(data) {
 }
 
 function parseLLMResponse(LLMResponse) {
-  //console.log('LLMResponse in parseLLMResponse: ', LLMResponse)
+    console.log('LLMResponse in parseLLMResponse: ', LLMResponse)
+  
+    // Extract JSON content between the first `{` and the last `}`
+    const jsonMatch = LLMResponse.content.match(/{[\s\S]*}/);
+  
+    if (!jsonMatch) {
+      throw new Error("No valid JSON found in LLM response");
+    }
+  
+    try {
+      const parsedContent = JSON.parse(jsonMatch[0]);
+      console.log("parsedContent:\n", parsedContent)
+  
+      var menu = {
+        Monday: { Breakfast: '', Lunch: '', Dinner: '' },
+        Tuesday: { Breakfast: '', Lunch: '', Dinner: '' },
+        Wednesday: { Breakfast: '', Lunch: '', Dinner: '' },
+        Thursday: { Breakfast: '', Lunch: '', Dinner: '' },
+        Friday: { Breakfast: '', Lunch: '', Dinner: '' },
+        Saturday: { Breakfast: '', Lunch: '', Dinner: '' },
+        Sunday: { Breakfast: '', Lunch: '', Dinner: '' },
+      };
+  
+      for (const key in parsedContent) {
+        if (key.includes('Ingredients')) continue; // Skip the Ingredients key
+        const [day, meal] = key.split('_');
+        menu[day][meal] = parsedContent[key];
+      }
+  
+      console.log('Menu: \n', menu)
+      return menu
+    } catch (error) {
+      console.error("Error parsing JSON content:", error);
+      throw error;
+    }
+  }
+  
+/*
+function parseLLMResponse(LLMResponse) {
+  console.log('LLMResponse in parseLLMResponse: ', LLMResponse)
   const parsedContent = JSON.parse(LLMResponse.content);
+  conosle.log("parsedContent:\n", parsedContent)
 
   var menu = {
     Monday: { Breakfast: '', Lunch: '', Dinner: '' },
@@ -79,6 +118,8 @@ function parseLLMResponse(LLMResponse) {
     menu[day][meal] = parsedContent[key];
   }
 
-  console.log(menu)
+  console.log('Menu: \n', menu)
   return menu
 }
+  */
+
