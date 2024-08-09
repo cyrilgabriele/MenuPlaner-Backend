@@ -12,3 +12,5 @@ In this phase i want to impelemnt the essential fucntionalities to create a MVP
 - Therefore with the authenitcaiton the user can set some preferences for example: 
     I want to eat always the same breakfast (me for example) or vegetarian, ...
 - set CORS settings in server
+
+how to structure the project: https://dev.to/vyan/how-to-structure-your-backend-code-in-nodejs-expressjs-2bdd
