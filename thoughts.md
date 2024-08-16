@@ -12,6 +12,7 @@ In this phase i want to impelemnt the essential fucntionalities to create a MVP
 - DONE: User must authenticate himself (auth0 ?)
 - Therefore with the authenitcaiton the user can set some preferences for example: 
     I want to eat always the same breakfast (me for example) or vegetarian, ... => select input done => send to DB in next step
-- set CORS settings in server => DONE need to be specifiec correctly aka do not open every URL
+- set CORS settings in server => need to be specifiec correctly aka do not open every URL
+- "secure" API acccess with tokens used from Auth0 (https://auth0.com/docs/secure/tokens)
 
 how to structure the project: https://dev.to/vyan/how-to-structure-your-backend-code-in-nodejs-expressjs-2bdd

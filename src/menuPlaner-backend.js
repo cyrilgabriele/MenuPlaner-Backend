@@ -130,7 +130,7 @@ app.post('/menu', async (req, res) => {
 
 app.post('/saveMenu', (req, res) => {
   //console.log(req)
-  res.send('done')
+  res.send(req.body)
 })
 
 async function get_llm_response(data) {
