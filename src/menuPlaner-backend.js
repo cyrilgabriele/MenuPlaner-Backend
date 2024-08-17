@@ -187,31 +187,3 @@ function parseLLMResponse(LLMResponse) {
       throw error;
     }
   }
-  
-/*
-function parseLLMResponse(LLMResponse) {
-  console.log('LLMResponse in parseLLMResponse: ', LLMResponse)
-  const parsedContent = JSON.parse(LLMResponse.content);
-  conosle.log("parsedContent:\n", parsedContent)
-
-  var menu = {
-    Monday: { Breakfast: '', Lunch: '', Dinner: '' },
-    Tuesday: { Breakfast: '', Lunch: '', Dinner: '' },
-    Wednesday: { Breakfast: '', Lunch: '', Dinner: '' },
-    Thursday: { Breakfast: '', Lunch: '', Dinner: '' },
-    Friday: { Breakfast: '', Lunch: '', Dinner: '' },
-    Saturday: { Breakfast: '', Lunch: '', Dinner: '' },
-    Sunday: { Breakfast: '', Lunch: '', Dinner: '' },
-  };
-
-  for (const key in parsedContent) {
-    if (key.includes('Ingredients')) continue; // Skip the Ingredients key
-    const [day, meal] = key.split('_');
-    menu[day][meal] = parsedContent[key];
-  }
-
-  console.log('Menu: \n', menu)
-  return menu
-}
-  */
-
