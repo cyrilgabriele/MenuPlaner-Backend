@@ -108,7 +108,7 @@ const OVERVIEW_FORMAT = "{ Monday: { Breakfast: { title: 'Avocado Toast', descri
 const OVERVIEW_PROMPT = `Provide information for a menu plan for an entire week.
                         I must receive JSON format with these keys, example: \`${OVERVIEW_FORMAT}\`
                         Use different meal examples. The title must have a maximum of three words. \
-                        You must provide three meals per day!`
+                        You must provide three meals for each day, Monday to Sunday!`
 
 const MAX_TOKENS = 30000
 
