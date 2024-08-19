@@ -105,9 +105,10 @@ const OVERVIEW_FORMAT = "{ Monday: { Breakfast: { title: 'Avocado Toast', descri
                         description: 'Grilled turkey on whole grain bread with lettuce, tomato, cucumber, and avocado spread' }, Dinner: { title: 'Spaghetti Marinara', \
                         description: 'Spaghetti pasta tossed with classic marinara sauce and basil' } } }"
 
-const OVERVIEW_PROMPT = `Provide information for a menu plan for an entire week including three meals per day.
+const OVERVIEW_PROMPT = `Provide information for a menu plan for an entire week.
                         I must receive JSON format with these keys, example: \`${OVERVIEW_FORMAT}\`
-                        Use different meal examples. The title must have a maximum of three words.`
+                        Use different meal examples. The title must have a maximum of three words. \
+                        You must provide three meals per day!`
 
 const MAX_TOKENS = 30000
 
@@ -167,12 +168,12 @@ function parseLLMResponse(llmResponse) {
   }
 
   try {
-    var llmResponse = extractJSONFromResponse(llmResponse)
+    var JSONllmResponse = extractJSONFromResponse(llmResponse)
 
     Object.keys(menu).forEach(day => {
-      menu[day].Breakfast = llmResponse[day].Breakfast
-      menu[day].Lunch = llmResponse[day].Lunch
-      menu[day].Dinner = llmResponse[day].Dinner
+      menu[day].Breakfast = JSONllmResponse[day].Breakfast
+      menu[day].Lunch = JSONllmResponse[day].Lunch
+      menu[day].Dinner = JSONllmResponse[day].Dinner
     });
   } catch (error) {
     console.error("An error occurred while parsing the LLM response:", error);
