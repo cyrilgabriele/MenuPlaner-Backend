@@ -99,7 +99,8 @@ const port = 3000
 const MODEL = 'mistralai/Mistral-7B-Instruct-v0.2'
 const OVERVIEW_PROMPT = 'Provide information for a menu plan for an entire week including three meals per day.\
                         I need per meal: title and a short description of the meal. Return the response in JSON format, so for example: \
-                        "{ \\"Monday_Breakfast\\": { \\"name\\": \\"Honey Nut Oats\\", \\"description\\": \\"Oatmeal with Bananas, Walnuts and Honey\\" } }"'
+                        "{ \\"Monday_Breakfast\\": { \\"title\\": \\"Honey Nut Oats\\", \\"description\\": \\"Oatmeal with Bananas, Walnuts and Honey\\" } }". \
+                        The title must have a maximum of three words.'
 
 const MAX_TOKENS = 30000
 
