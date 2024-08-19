@@ -97,10 +97,17 @@ const sampleResponse = {
 const app = express()
 const port = 3000
 const MODEL = 'mistralai/Mistral-7B-Instruct-v0.2'
-const OVERVIEW_PROMPT = 'Provide information for a menu plan for an entire week including three meals per day.\
-                        I need per meal: title and a short description of the meal. Return the response in JSON format, so for example: \
-                        "{ \\"Monday_Breakfast\\": { \\"title\\": \\"Honey Nut Oats\\", \\"description\\": \\"Oatmeal with Bananas, Walnuts and Honey\\" } }". \
-                        The title must have a maximum of three words.'
+
+const OVERVIEW_FORMAT = "{ Monday: { Breakfast: { title: 'Avocado Toast', description: 'Whole grain toast topped with mashed avocado, salt, pepper, and a poached egg' }, \
+                        Lunch: { title: 'Chicken Salad', description: 'Grilled chicken served on a bed of mixed greens with cherry tomatoes, cucumber, bell peppers, topped with \
+                        balsamic vinaigrette' }, Dinner: { title: 'Vegetable Stir Fry', description: 'Assorted vegetables sautéed with soy sauce, garlic, ginger, and served over rice' } }, \
+                        Tuesday: { Breakfast: { title: 'Fruit Bowl', description: 'Assorted fresh fruits with a dollop of Greek yogurt and a drizzle of honey' }, Lunch: { title: 'Turkey Sandwich', \
+                        description: 'Grilled turkey on whole grain bread with lettuce, tomato, cucumber, and avocado spread' }, Dinner: { title: 'Spaghetti Marinara', \
+                        description: 'Spaghetti pasta tossed with classic marinara sauce and basil' } } }"
+
+const OVERVIEW_PROMPT = `Provide information for a menu plan for an entire week including three meals per day.
+                        I must receive JSON format with these keys, example: \`${OVERVIEW_FORMAT}\`
+                        Use different meal examples. The title must have a maximum of three words.`
 
 const MAX_TOKENS = 30000
 
@@ -117,6 +124,7 @@ app.post('/menu', async (req, res) => {
   console.log(`Title: ${title}, Body: ${body}, UserId: ${userId}`);
   try {
       const llmResponse = await getLLMResponse(body)
+      console.log("llmResponse: \n", llmResponse)
       const parsedLLMResponse = parseLLMResponse(llmResponse)
       res.send(parsedLLMResponse)
   } catch (error) {
@@ -138,9 +146,8 @@ async function getLLMResponse(data) {
       messages: [{ role: "user", content: OVERVIEW_PROMPT+data}],
       max_tokens: MAX_TOKENS
     });
-  //console.log("Out: \n", out)
-  //console.log("Out:\n", out.choices[0].message.content)
-  var responseObject = JSON.parse(out.choices[0].message.content)
+  console.log("Out:\n", out.choices[0].message.content)
+  const responseObject = out.choices[0].message.content
   //console.log("responseObject: \n", responseObject)
   //console.log(typeof(responseObject))
   return responseObject
@@ -160,14 +167,33 @@ function parseLLMResponse(llmResponse) {
   }
 
   try {
+    var llmResponse = extractJSONFromResponse(llmResponse)
+
     Object.keys(menu).forEach(day => {
-      menu[day].Breakfast = llmResponse[day][`${day}_Breakfast`];
-      menu[day].Lunch = llmResponse[day][`${day}_Lunch`];
-      menu[day].Dinner = llmResponse[day][`${day}_Dinner`];
+      menu[day].Breakfast = llmResponse[day].Breakfast
+      menu[day].Lunch = llmResponse[day].Lunch
+      menu[day].Dinner = llmResponse[day].Dinner
     });
   } catch (error) {
     console.error("An error occurred while parsing the LLM response:", error);
   }
   console.log("parseLLMResponse: menu: \n", menu)
   return menu;
+}
+
+function extractJSONFromResponse(llmResponse) {
+  const firstBraceIndex = llmResponse.indexOf('{');
+  const lastBraceIndex = llmResponse.lastIndexOf('}');
+  var parsedJSON = null
+  
+  if (firstBraceIndex !== -1 && lastBraceIndex !== -1) {
+      const jsonString = llmResponse.slice(firstBraceIndex, lastBraceIndex + 1);
+      
+      try {
+        parsedJSON = JSON.parse(jsonString);
+      } catch (error) {
+          console.error('Error parsing JSON:', error);
+      }
+  }
+  return parsedJSON
 }
