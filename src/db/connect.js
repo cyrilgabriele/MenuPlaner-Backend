@@ -1,15 +1,13 @@
-import 'dotenv/config'
 import pg from 'pg'
 const { Pool } = pg
+import config from '../config/config.js';
 
-const client = new Pool({
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT,
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    database: process.env.PG_DATABASE,
+const pool = new Pool({
+    user: config.dbUser,
+    host: config.dbHost,
+    port: config.dbPort,
+    database: config.dbName,
 });
+ await pool.connect()
+export default pool;
 
-await client.connect();
-
-// Add the rest of your code logic here
