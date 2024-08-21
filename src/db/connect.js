@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import pg from 'pg'
-const { Client } = pg
+const { Pool } = pg
 
-const client = new Client({
+const client = new Pool({
     host: process.env.PG_HOST,
     port: process.env.PG_PORT,
     user: process.env.PG_USER,
