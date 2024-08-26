@@ -8,6 +8,5 @@ const pool = new Pool({
     port: config.dbPort,
     database: config.dbName,
 });
- await pool.connect()
-export default pool;
 
+export default pool;
