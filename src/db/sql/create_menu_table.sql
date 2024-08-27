@@ -6,5 +6,5 @@ CREATE TABLE meal (
     menuplan_id INT NOT NULL, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (person_id) REFERENCES person(person_id) ON DELETE CASCADE, 
-    FOREIGN KEY (menuplan_id) REFERENCES menuplan(menuplan_id) ON DELETE SET
+    FOREIGN KEY (menuplan_id) REFERENCES menuplan(menuplan_id) ON DELETE SET NULL
 )
