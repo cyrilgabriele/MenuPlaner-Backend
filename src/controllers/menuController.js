@@ -1,6 +1,6 @@
 import { getLLMResponse, parseLLMResponse } from '../services/menuService.js'
 
-export async function getMenu(req, res) {
+export async function generateMenu(req, res) {
     const { title, body, userId } = req.body
     console.log(`Title: ${title}, Body: ${body}, UserId: ${userId}`)
     try {

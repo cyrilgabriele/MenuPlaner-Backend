@@ -1,9 +1,9 @@
 import express from 'express'
-import { getMenu, saveMenu } from '../controllers/menuController.js'
+import { generateMenu, saveMenu } from '../controllers/menuController.js'
 
 const router = express.Router()
 
-router.post('/', getMenu)
+router.post('/generateMenu', generateMenu)
 router.post('/saveMenu', saveMenu)
 
 export default router;
