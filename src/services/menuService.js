@@ -1,3 +1,5 @@
+import { HfInference } from "@huggingface/inference"
+
 const sampleResponse = JSON.stringify({
     "Monday": {
     "Breakfast": {
