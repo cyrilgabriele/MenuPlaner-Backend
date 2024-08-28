@@ -1,4 +1,4 @@
-import { getLLMResponse, parseLLMResponse } from '../services/menuService.js'
+import { getLLMResponse, parseLLMResponse } from '../services/menuplanService.js'
 import pool from '../db/connect.js'
 import { text } from 'express'
 
