@@ -1,15 +1,11 @@
-import { getLLMResponse, parseLLMResponse } from '../services/menuplanService.js'
-import pool from '../db/connect.js'
-import { text } from 'express'
+import menuplanModel from '../models/menuplanModel.js'
+
 
 export async function generateMenuplan(req, res) {
-    const { title, body, userId } = req.body
-    console.log(`Title: ${title}, Body: ${body}, UserId: ${userId}`)
     try {
-        const llmResponse = await getLLMResponse(body)
-        console.log("llmResponse: \n", llmResponse)
-        const parsedLLMResponse = parseLLMResponse(llmResponse)
-        res.send(parsedLLMResponse);
+        const custom_prompt = req.body.custom_prompt
+        const parsedLLMResponse = await menuplanModel.generateMenuplan(custom_prompt)
+        res.status(200).send(parsedLLMResponse)
     } catch (error) {
         console.log(error);
         console.log("ERROR IN LLM FETCH");
@@ -18,19 +14,42 @@ export async function generateMenuplan(req, res) {
 }
 
 export async function saveMenuplan(req, res) {
-    //TODO send here the body (= accepted menu) to the db to store it persitently 
     try {
-        
-        
-        res.send(req.body)
-        
+        const person_id = req.body.person_id
+        const custom_prompt = req.body.custom_prompt
+        const meals = req.body.meals
+        // save the new menuplan
+        const menuplan_id = await menuplanModel.saveMenuplan(person_id, custom_prompt);
+        // save each meal corresponding to thge menuplan
+        const meal_ids = []
+        for(const day in meals) {
+            console.log(day)
+            for(const meal_name in meals[day]) {
+                // console.log(meal_name)
+                const meal = meals[day][meal_name]
+                // console.log("meals[day][meal_name].title: ", meal.title)
+                // console.log("meals[day][meal_name].description: ", meal.description)
+                const meal_description = meal.description
+                const person_id = 1 // TODO fix this to acctual id
+                const meal_title = meal.title
+                const meal_id = await menuplanModel.saveMeal(meal_name, meal_description, person_id, menuplan_id, meal_title)
+                meal_ids.push(meal_id)
+            }
+        }
+        res.status(201).json({ menuplan_id });
     } catch (error) {
-        
+        console.error('Error saving menu:', error);
+        res.status(500).send({ error: 'Error saving menu' });
     }
-    
 }
 
-export function getMenuplan(req, res) {
-    // TODO: here a SELECT on the menuplan table with the correpsonding person_id aka auth0_id 
-    // realizsed here that the DB schema is not the best as it is now? => how to get the menuplan with the auth0 id???
+export async function getMenuplan(req, res) {
+    // TODO: if person_id is not valid aka no entry w/ this id in table => still HTPP201...
+    try {
+        const person_id = req.body.person_id
+        const query_res = await menuplanModel.getMenuplanByPersonId(person_id)
+        res.status(201).json(query_res)
+    } catch (error) {
+        res.status(500).send( {error: 'Error while fetching menuplan'} )
+    }
 }
