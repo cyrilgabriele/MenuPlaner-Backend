@@ -30,7 +30,6 @@ export async function saveMenuplan(req, res) {
                 // console.log("meals[day][meal_name].title: ", meal.title)
                 // console.log("meals[day][meal_name].description: ", meal.description)
                 const meal_description = meal.description
-                const person_id = 1 // TODO fix this to acctual id
                 const meal_title = meal.title
                 const meal_id = await menuplanModel.saveMeal(meal_name, meal_description, person_id, menuplan_id, meal_title)
                 meal_ids.push(meal_id)
