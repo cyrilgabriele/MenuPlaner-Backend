@@ -1,4 +1,5 @@
 import menuplanModel from '../models/menuplanModel.js'
+import { saveEachMeal } from '../services/mealService.js'
 
 
 export async function generateMenuplan(req, res) {
@@ -21,20 +22,8 @@ export async function saveMenuplan(req, res) {
         // save the new menuplan
         const menuplan_id = await menuplanModel.saveMenuplan(person_id, custom_prompt);
         // save each meal corresponding to thge menuplan
-        const meal_ids = []
-        for(const day in meals) {
-            console.log(day)
-            for(const meal_name in meals[day]) {
-                // console.log(meal_name)
-                const meal = meals[day][meal_name]
-                // console.log("meals[day][meal_name].title: ", meal.title)
-                // console.log("meals[day][meal_name].description: ", meal.description)
-                const meal_description = meal.description
-                const meal_title = meal.title
-                const meal_id = await menuplanModel.saveMeal(meal_name, meal_description, person_id, menuplan_id, meal_title)
-                meal_ids.push(meal_id)
-            }
-        }
+        const meal_ids = await saveEachMeal(meals, person_id, menuplan_id)
+        console.log("meal_ids: ", meal_ids)
         res.status(201).json({ menuplan_id });
     } catch (error) {
         console.error('Error saving menu:', error);

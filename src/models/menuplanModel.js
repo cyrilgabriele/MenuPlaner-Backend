@@ -27,6 +27,7 @@ const menuplanModel = {
             }
 
             const result = await pool.query(saveMenuplanQuery)
+            // console.log("result.rows[0].menuplan_id: ", result.rows[0].menuplan_id)
             return result.rows[0].menuplan_id 
         } catch (error) {
             console.error('Error creating menuplan:', error)
@@ -44,7 +45,8 @@ const menuplanModel = {
                 values: [meal_name, meal_description, person_id, menuplan_id, meal_title]
             }
             const result = await pool.query(saveMealMealQuery)
-            return result.rows.meal_id 
+            console.log("saveMeal(): result.rows[0].meal_id: ", result.rows[0].meal_id )
+            return result.rows[0].meal_id 
         } catch (error) {
             console.error('Error saving meal:', error)
             throw error
