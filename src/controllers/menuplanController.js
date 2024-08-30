@@ -5,6 +5,7 @@ import { saveEachMeal } from '../services/mealService.js'
 export async function generateMenuplan(req, res) {
     try {
         const custom_prompt = req.body.custom_prompt
+        console.log("generateMenuplan: custom_prompt: ", custom_prompt)
         const parsedLLMResponse = await menuplanModel.generateMenuplan(custom_prompt)
         res.status(200).send(parsedLLMResponse)
     } catch (error) {
