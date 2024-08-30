@@ -4,5 +4,4 @@ CREATE TABLE user_account (
     nickname VARCHAR(255) NOT NULL UNIQUE,
     menuplan_id INT UNIQUE NOT NULL,
     FOREIGN KEY (person_id) REFERENCES person(person_id) ON DELETE CASCADE,
-    FOREIGN KEY (menuplan_id) REFERENCES menuplan(menuplan_id) ON DELETE CASCADE
 )
