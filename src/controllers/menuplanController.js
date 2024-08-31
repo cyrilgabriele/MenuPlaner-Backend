@@ -17,13 +17,13 @@ export async function generateMenuplan(req, res) {
 
 export async function saveMenuplan(req, res) {
     try {
-        const person_id = req.body.person_id
+        const auth0_user_id = req.body.auth0_user_id
         const custom_prompt = req.body.custom_prompt
         const meals = req.body.meals
         // save the new menuplan
-        const menuplan_id = await menuplanModel.saveMenuplan(person_id, custom_prompt);
+        const menuplan_id = await menuplanModel.saveMenuplan(auth0_user_id, custom_prompt);
         // save each meal corresponding to thge menuplan
-        const meal_ids = await saveEachMeal(meals, person_id, menuplan_id)
+        const meal_ids = await saveEachMeal(meals, menuplan_id)
         console.log("meal_ids: ", meal_ids)
         res.status(201).json({ menuplan_id });
     } catch (error) {
@@ -33,10 +33,10 @@ export async function saveMenuplan(req, res) {
 }
 
 export async function getMenuplan(req, res) {
-    // TODO: if person_id is not valid aka no entry w/ this id in table => still HTPP201...
+    // TODO: if auth0_user_id is not valid aka no entry w/ this id in table => still HTPP201...
     try {
-        const person_id = req.body.person_id
-        const query_res = await menuplanModel.getMenuplanByPersonId(person_id)
+        const auth0_user_id = req.body.auth0_user_id
+        const query_res = await menuplanModel.getMenuplanByPersonId(auth0_user_id)
         res.status(201).json(query_res)
     } catch (error) {
         res.status(500).send( {error: 'Error while fetching menuplan'} )

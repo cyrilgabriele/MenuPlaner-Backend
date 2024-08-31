@@ -16,14 +16,14 @@ const menuplanModel = {
         }
     },
 
-    saveMenuplan: async (person_id, custom_prompt) => {
+    saveMenuplan: async (auth0_user_id, custom_prompt) => {
         try {
             const saveMenuplanQuery = {
                 name: "saveMenuplan",
-                text: "INSERT INTO menuplan (person_id, custom_prompt, created_at) \
+                text: "INSERT INTO menuplan (auth0_user_id, custom_prompt, created_at) \
                         VALUES ($1, $2, NOW()) \
                         RETURNING menuplan_id", 
-                values: [person_id, custom_prompt]
+                values: [auth0_user_id, custom_prompt]
             }
 
             const result = await pool.query(saveMenuplanQuery)
@@ -35,29 +35,11 @@ const menuplanModel = {
         }
     },
 
-    saveMeal: async (meal_name, meal_description, person_id, menuplan_id, meal_title) => {
-        try {
-            const saveMealMealQuery = {
-                name: "saveMeal", 
-                text: "INSERT INTO meal (meal_name, meal_description, person_id, menuplan_id, created_at, meal_title) \
-                VALUES ($1, $2, $3, $4, NOW(), $5) \
-                RETURNING meal_id",
-                values: [meal_name, meal_description, person_id, menuplan_id, meal_title]
-            }
-            const result = await pool.query(saveMealMealQuery)
-            console.log("saveMeal(): result.rows[0].meal_id: ", result.rows[0].meal_id )
-            return result.rows[0].meal_id 
-        } catch (error) {
-            console.error('Error saving meal:', error)
-            throw error
-        }
-    },
-
-    getMenuplanByPersonId: async (person_id) => {
+    getMenuplanByPersonId: async (auth0_user_id) => {
         const getMenuplanQuery = {
             name: "getMenuplan", 
-            text: "SELECT * FROM menuplan WHERE person_id = $1",
-            values: [person_id],
+            text: "SELECT * FROM menuplan WHERE auth0_user_id = $1",
+            values: [auth0_user_id],
         }
 
         try {
