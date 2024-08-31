@@ -1,5 +1,6 @@
 import menuplanModel from '../models/menuplanModel.js'
-import { saveEachMeal } from '../services/mealService.js'
+// import { saveEachMeal } from '../services/mealService.js'
+import mealModel from '../models/mealModel.js'
 
 
 export async function generateMenuplan(req, res) {
@@ -23,7 +24,7 @@ export async function saveMenuplan(req, res) {
         // save the new menuplan
         const menuplan_id = await menuplanModel.saveMenuplan(auth0_user_id, custom_prompt);
         // save each meal corresponding to thge menuplan
-        const meal_ids = await saveEachMeal(meals, menuplan_id)
+        const meal_ids = await mealModel.saveEachMeal(meals, menuplan_id)
         console.log("meal_ids: ", meal_ids)
         res.status(201).json({ menuplan_id });
     } catch (error) {
@@ -36,7 +37,7 @@ export async function getMenuplan(req, res) {
     // TODO: if auth0_user_id is not valid aka no entry w/ this id in table => still HTPP201...
     try {
         const auth0_user_id = req.body.auth0_user_id
-        const query_res = await menuplanModel.getMenuplanByPersonId(auth0_user_id)
+        const query_res = await menuplanModel.getMenuplanById(auth0_user_id)
         res.status(201).json(query_res)
     } catch (error) {
         res.status(500).send( {error: 'Error while fetching menuplan'} )

@@ -35,11 +35,11 @@ const menuplanModel = {
         }
     },
 
-    getMenuplanByPersonId: async (auth0_user_id) => {
+    getMenuplanById: async (id) => {
         const getMenuplanQuery = {
             name: "getMenuplan", 
             text: "SELECT * FROM menuplan WHERE auth0_user_id = $1",
-            values: [auth0_user_id],
+            values: [id],
         }
 
         try {
