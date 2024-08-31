@@ -41,10 +41,10 @@ const menuplanModel = {
             text: "SELECT * FROM menuplan WHERE auth0_user_id = $1",
             values: [id],
         }
-
+        
         try {
             const result = await pool.query(getMenuplanQuery)
-            return result.rows 
+            return result.rows
         } catch (error) {
             console.error('Error fetching menuplan:', error)
             throw error
