@@ -43,3 +43,13 @@ export async function getMenuplan(req, res) {
         res.status(500).send( {error: 'Error while fetching menuplan'} )
     }
 }
+
+export async function getMenuplanWithMeals(req, res) {
+    try {
+        const auth0_user_id = req.body.auth0_user_id
+        const query_res = await menuplanModel.getMenuplanWithMeals(auth0_user_id)
+        res.status(201).json(query_res)
+    } catch(error) {
+        res.status(500).send( {error: 'Error while fetching menuplan'} )
+    }
+}

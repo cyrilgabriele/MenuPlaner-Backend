@@ -10,8 +10,8 @@ const menuplanModel = {
             const parsedLLMResponse = parseLLMResponse(llmResponse)
             return parsedLLMResponse
         } catch (error) {
-            // console.log(error);
-            // console.log("ERROR IN LLM FETCH");
+            // console.log(error)
+            // console.log("ERROR IN LLM FETCH")
             res.status(500).send({ error: 'Error generating menu' })
         }
     },
@@ -47,6 +47,25 @@ const menuplanModel = {
             return result.rows
         } catch (error) {
             console.error('Error fetching menuplan:', error)
+            throw error
+        }
+    },
+
+    getMenuplanWithMeals: async (auth0_user_id) => {
+        const query = {
+            text: "SELECT mp.menuplan_id, mp.custom_prompt,\
+                    m.meal_name, m.meal_title, m.meal_description, m.meal_id\
+                    FROM menuplan mp\
+                    LEFT JOIN meal m ON mp.menuplan_id = m.menuplan_id\
+                    WHERE mp.auth0_user_id = $1",
+            values: [auth0_user_id],
+        }
+    
+        try {
+            const result = await pool.query(query)
+            return result.rows
+        } catch (error) {
+            console.error('Error fetching menu plan with meals:', error)
             throw error
         }
     },
