@@ -1,15 +1,15 @@
 import pool from '../db/connect.js'
 
 const user_accountModel = {
-    createUser: async (person_id, auth0_user_id, nickname, menuplan_id) => {
-        const query = `
-            INSERT INTO user_account (person_id, auth0_user_id, nickname, menuplan_id)
-            VALUES ($1, $2, $3, $4)
-            RETURNING person_id
-        `
-        const values = [person_id, auth0_user_id, nickname, menuplan_id]
+    createUser: async (person_id, auth0_user_id, nickname) => {
         try {
-            const result = await pool.query(query, values)
+            const createUserQuery = {
+                text:   `INSERT INTO user_account (person_id, auth0_user_id, nickname)
+                        VALUES ($1, $2, $3)
+                        RETURNING person_id `,
+                values: [person_id, auth0_user_id, nickname]
+            }
+            const result = await pool.query(createUserQuery)
             return result.rows[0].person_id 
         } catch (error) {
             console.error('Error creating user account:', error)
