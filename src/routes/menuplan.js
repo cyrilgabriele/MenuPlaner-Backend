@@ -8,4 +8,4 @@ router.post('/generateMenuplan', generateMenuplan)
 router.post('/saveMenuplan', saveMenuplan)
 router.post('/getMenuplanWithMeals', getMenuplanWithMeals)
 
-export default router;
+export default router

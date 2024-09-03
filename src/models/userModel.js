@@ -1,6 +1,6 @@
 import pool from '../db/connect.js'
 
-const userModel = {
+const user_accountModel = {
     createUser: async (person_id, auth0_user_id, nickname, menuplan_id) => {
         const query = `
             INSERT INTO user_account (person_id, auth0_user_id, nickname, menuplan_id)
@@ -31,4 +31,4 @@ const userModel = {
     },
 }
 
-export default userModel
+export default user_accountModel
