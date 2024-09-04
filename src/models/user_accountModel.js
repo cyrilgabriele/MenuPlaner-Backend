@@ -6,11 +6,11 @@ const user_accountModel = {
             const createUserQuery = {
                 text:   `INSERT INTO user_account (person_id, auth0_user_id, nickname)
                         VALUES ($1, $2, $3)
-                        RETURNING person_id `,
+                        RETURNING *`,
                 values: [person_id, auth0_user_id, nickname]
             }
             const result = await pool.query(createUserQuery)
-            return result.rows[0].person_id 
+            return result.rows[0] 
         } catch (error) {
             console.error('Error creating user account:', error)
             throw error
