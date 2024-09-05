@@ -3,7 +3,7 @@ import { generateMenuplan, saveMenuplan, getMenuplan, getMenuplanWithMeals } fro
 
 const router = express.Router()
 
-router.get('/getMenuplan', getMenuplan)
+// router.get('/getMenuplan', getMenuplan)
 router.post('/generateMenuplan', generateMenuplan)
 router.post('/saveMenuplan', saveMenuplan)
 router.post('/getMenuplanWithMeals', getMenuplanWithMeals)
