@@ -18,11 +18,12 @@ const user_accountModel = {
     },
 
     getUserByAuth0Id: async (auth0_user_id) => {
-        const query = `
-            SELECT * FROM user_account WHERE auth0_user_id = $1
-        `
         try {
-            const result = await pool.query(query, [auth0_user_id])
+            const getUserQuery = {
+                text:   `SELECT * FROM user_account WHERE auth0_user_id = $1`,
+                values: [auth0_user_id]
+            }
+            const result = await pool.query(getUserQuery)
             return result.rows[0] 
         } catch (error) {
             console.error('Error fetching user account:', error)

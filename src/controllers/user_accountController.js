@@ -4,6 +4,7 @@ export async function getUser(req, res) {
     try {
         const auth0_user_id = req.body.auth0_user_id
         const userObject = await user_accountService.getUser(auth0_user_id)
+        console.log("userObject: ", userObject)
         res.status(200).json(userObject)
     } catch (error) {
         console.log("Error in getUser: ", error)
