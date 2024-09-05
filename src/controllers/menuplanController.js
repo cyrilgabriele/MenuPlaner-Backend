@@ -27,6 +27,8 @@ export async function saveMenuplan(req, res) {
 }
 
 export async function getMenuplan(req, res) {
+    // TODO this is not used however: 
+    // defined as a GET request => GET obviously no body? what am I doing here???
     try {
         const auth0_user_id = req.body.auth0_user_id
         const query_res = await menuplanService.getMenuplan(auth0_user_id)
