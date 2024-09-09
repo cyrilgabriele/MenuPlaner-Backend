@@ -29,3 +29,28 @@ CREATE TABLE meal (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (menuplan_id) REFERENCES menuplan(menuplan_id) ON DELETE SET NULL
 );
+
+CREATE TABLE recipe (
+    recipe_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    meal_id INT UNIQUE NOT NULL,  
+    title VARCHAR(255) NOT NULL,
+    instructions TEXT NOT NULL, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (meal_id) REFERENCES meal(meal_id) ON DELETE CASCADE
+);
+
+CREATE TABLE ingredient (
+    ingredient_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE recipe_ingredient (
+    recipe_id INT NOT NULL,
+    ingredient_id INT NOT NULL,
+    quantity INT NOT NULL, 
+    unit VARCHAR(50),  
+    PRIMARY KEY (recipe_id, ingredient_id),
+    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE
+);
+
