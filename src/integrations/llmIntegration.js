@@ -118,7 +118,7 @@ const llmIntegration = {
         // return sampleResponse // if working @Regatron bc of VPN
     },
 
-    parseLLMResponse(llmResponse) {
+    parseLLMMenuplanResponse(llmResponse) {
         const JSONllmResponse = extractJSONFromResponse(llmResponse)
         const menu = {
             Monday: { Breakfast: '', Lunch: '', Dinner: '' },
