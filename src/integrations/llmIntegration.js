@@ -102,25 +102,15 @@ const sampleResponse = JSON.stringify({
 })
 
 const MODEL = 'mistralai/Mistral-7B-Instruct-v0.2'
-const OVERVIEW_FORMAT = "{ Monday: { Breakfast: { title: 'Avocado Toast', description: 'Whole grain toast topped with mashed avocado, salt, pepper, and a poached egg' }, \
-                        Lunch: { title: 'Chicken Salad', description: 'Grilled chicken served on a bed of mixed greens with cherry tomatoes, cucumber, bell peppers, topped with \
-                        balsamic vinaigrette' }, Dinner: { title: 'Vegetable Stir Fry', description: 'Assorted vegetables sautéed with soy sauce, garlic, ginger, and served over rice' } }, \
-                        Tuesday: { Breakfast: { title: 'Fruit Bowl', description: 'Assorted fresh fruits with a dollop of Greek yogurt and a drizzle of honey' }, Lunch: { title: 'Turkey Sandwich', \
-                        description: 'Grilled turkey on whole grain bread with lettuce, tomato, cucumber, and avocado spread' }, Dinner: { title: 'Spaghetti Marinara', \
-                        description: 'Spaghetti pasta tossed with classic marinara sauce and basil' } } }"
-const OVERVIEW_PROMPT = `Provide information for a menu plan for an entire week.
-                        I must receive JSON format with these keys, example: \`${OVERVIEW_FORMAT}\`
-                        Use different meal examples. The title must have a maximum of three words. \
-                        You must provide three meals for each day, Monday to Sunday!`
 const MAX_TOKENS = 30000
 
 const llmIntegration = {
-    async getLLMResponse(data) {
+    async getLLMResponse(data, guide_prompt) {
         const HF_TOKEN = process.env.HUGGINGFACE_TOKEN
         const inference = new HfInference(HF_TOKEN)
         const out = await inference.chatCompletion({
             model: MODEL,
-            messages: [{ role: 'user', content: OVERVIEW_PROMPT + data }],
+            messages: [{ role: 'user', content: guide_prompt + data }],
             max_tokens: MAX_TOKENS
         })
         return out.choices[0].message.content
@@ -168,4 +158,4 @@ function extractJSONFromResponse(llmResponse) {
     return null
 }
 
-export default llmIntegration
+export default llmIntegration 
