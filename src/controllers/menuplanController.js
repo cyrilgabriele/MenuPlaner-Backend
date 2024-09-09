@@ -5,7 +5,7 @@ export async function generateMenuplan(req, res) {
         const custom_prompt = req.body.custom_prompt
         console.log("generateMenuplan: custom_prompt: ", custom_prompt)
         const parsedLLMResponse = await menuplanService.generateMenuplan(custom_prompt)
-        res.status(200).send(parsedLLMResponse)
+        res.status(201).send(parsedLLMResponse)
     } catch (error) {
         console.log("Error in generateMenuplan: ", error)
         res.status(500).send({ error: 'Error generating menu' })
