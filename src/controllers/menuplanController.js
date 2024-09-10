@@ -1,4 +1,5 @@
 import menuplanService from '../services/menuplanService.js'
+import recipeService from '../services/recipeService.js'
 
 export async function generateMenuplan(req, res) {
     try {
@@ -18,7 +19,9 @@ export async function saveMenuplan(req, res) {
         const custom_prompt = req.body.custom_prompt
         const meals = req.body.meals
         console.log("saveMenuplan: custom_prompt: ", custom_prompt)
-        const menuplan_id = await menuplanService.saveMenuplan(auth0_user_id, custom_prompt, meals)
+        const response = await menuplanService.saveMenuplan(auth0_user_id, custom_prompt, meals)
+        const menuplan_id = response.menuplan_id
+        const meal_ids = response.meal_ids
         res.status(201).json({ menuplan_id })
     } catch (error) {
         console.error('Error in saveMenuplan:', error)

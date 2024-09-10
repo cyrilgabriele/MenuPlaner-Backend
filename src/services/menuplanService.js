@@ -22,8 +22,9 @@ const menuplanService = {
 
     async saveMenuplan(auth0_user_id, custom_prompt, meals) {
         const menuplan_id = await menuplanModel.saveMenuplan(auth0_user_id, custom_prompt)
-        await mealModel.saveEachMeal(meals, menuplan_id)
-        return menuplan_id
+        const meal_ids = await mealModel.saveEachMeal(meals, menuplan_id)
+        // console.log("menuplanService: meal_ids: ", meal_ids)
+        return {"menuplan_id": menuplan_id, "meal_ids": meal_ids}
     },
 
     async getMenuplan(auth0_user_id) {
