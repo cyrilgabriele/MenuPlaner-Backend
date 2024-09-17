@@ -1,5 +1,4 @@
 import menuplanService from '../services/menuplanService.js'
-import recipeService from '../services/recipeService.js'
 
 export async function generateMenuplan(req, res) {
     try {
