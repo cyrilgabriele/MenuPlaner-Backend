@@ -101,11 +101,14 @@ const sampleResponse = JSON.stringify({
     }
 })
 
-const MODEL = 'mistralai/Mistral-7B-Instruct-v0.2'
+// const MODEL = 'mistralai/Mistral-7B-Instruct-v0.2' // somehow this model is/was down when i tried it on the 17.09.24 13:00 
+const MODEL = 'mistralai/Mistral-Nemo-Instruct-2407'
 const MAX_TOKENS = 30000
 
 const llmIntegration = {
     async getLLMResponse(data, guide_prompt) {
+        // console.log("data: \n", data)
+        // console.log("guide_prompt: \n", guide_prompt)
         const HF_TOKEN = process.env.HUGGINGFACE_TOKEN
         const inference = new HfInference(HF_TOKEN)
         const out = await inference.chatCompletion({
